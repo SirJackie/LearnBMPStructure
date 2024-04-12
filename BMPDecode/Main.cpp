@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 #include "Main.h"
 
 using namespace std;
@@ -79,6 +80,45 @@ void Setup() {
 
 	// 释放内存
 	//free(image_data);
+
+
+
+	// Save BMP File Bytes into a TXT File
+	FILE *file2;
+	string str = "";
+
+	// 遍历图像数据并输出颜色信息
+	for (row = 0; row < info_header.height; row++) {
+		for (col = 0; col < info_header.width; col++) {
+			// 计算当前像素在图像数据数组中的索引
+			int index = row * info_header.width * (info_header.bit_count / 8) + col * (info_header.bit_count / 8);
+
+			str += std::to_string((int)image_data[index + 0]);
+			str += " ";
+			str += std::to_string((int)image_data[index + 1]);
+			str += " ";
+			str += std::to_string((int)image_data[index + 2]);
+			str += " ";
+			str += "\n";
+		}
+	}
+
+	file2 = fopen("result.txt", "w");
+
+	// 检查文件是否成功打开
+	if (file2 == NULL) {
+		printf("无法打开文件.\n");
+		return;
+	}
+
+	// 将字符串写入文件
+	fprintf(file2, "%s", str.c_str());
+
+	// 关闭文件
+	fclose(file2);
+
+	printf("字符串已成功写入到 result.txt 文件中.\n");
+
 }
 
 void Update() {
