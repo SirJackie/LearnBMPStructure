@@ -77,23 +77,8 @@ void Setup() {
 	// 关闭文件
 	fclose(file);
 
-	//// 遍历图像数据并输出颜色信息
-	//for (row = 0; row < info_header.height; row++) {
-	//	for (col = 0; col < info_header.width; col++) {
-	//		// 计算当前像素在图像数据数组中的索引
-	//		int index = row * info_header.width * (info_header.bit_count / 8) + col * (info_header.bit_count / 8);
-
-	//		// 输出当前像素的颜色信息
-	//		printf("Pixel at (%d, %d): ", col, row);
-	//		for (int i = 0; i < (info_header.bit_count / 8); i++) {
-	//			printf("%02X ", image_data[index + i]);
-	//		}
-	//		printf("\n");
-	//	}
-	//}
-
 	// 释放内存
-	free(image_data);
+	//free(image_data);
 }
 
 void Update() {
@@ -120,14 +105,6 @@ void Update() {
 			image[(row * 800 + col) * 4 + 0] = image_data[index + 0];
 			image[(row * 800 + col) * 4 + 1] = image_data[index + 1];
 			image[(row * 800 + col) * 4 + 2] = image_data[index + 2];
-			//image[(row * 800 + col) * 4 + 3] = image_data[index + 3];
-
-			//// 输出当前像素的颜色信息
-			//printf("Pixel at (%d, %d): ", col, row);
-			//for (int i = 0; i < (info_header.bit_count / 8); i++) {
-			//	printf("%02X ", image_data[index + i]);
-			//}
-			//printf("\n");
 		}
 	}
 }
