@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <iostream>
+#include "Main.h"
 
 // 定义窗口大小
 const int WINDOW_WIDTH = 800;
@@ -11,7 +12,8 @@ const int IMAGE_HEIGHT = 600;
 
 // 定义图像数据
 const int IMAGE_SIZE = IMAGE_WIDTH * IMAGE_HEIGHT * 4; // RGBA 格式
-BYTE image[IMAGE_SIZE] = { 0 }; // 初始化为全黑
+BYTE image_Store[IMAGE_SIZE] = { 0 }; // 初始化为全黑
+BYTE *image = &image_Store[0];
 
 								// 渲染函数
 void Render(HWND hwnd) {
@@ -65,7 +67,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 	return 0;
 }
 
-char color = 128;
+bool firstFrame = true;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	// 注册窗口类
@@ -95,19 +97,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DispatchMessage(&msg);
 		}
 
-
-		for (int y = 0; y < 600; y++) {
-			for (int x = 0; x < 800; x++) {
-				image[(y * 800 + x) * 4 + 0] = 0;  // B
-				image[(y * 800 + x) * 4 + 1] = 0;  // G
-				image[(y * 800 + x) * 4 + 2] = color;  // R
-				image[(y * 800 + x) * 4 + 3] = 0;
-			}
+		if (firstFrame) {
+			Setup();
+			firstFrame = false;
 		}
-
-		color++;
-		if (color > 255) {
-			color %= 256;
+		else {
+			Update();
 		}
 
 		// 渲染画面
